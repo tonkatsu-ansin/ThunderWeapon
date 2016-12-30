@@ -14,8 +14,8 @@ def chat():
     print(data)
     firebase.post('/boards/chat', json.loads(data))
     response = jsonify({"status": "ok"})
-    response.header['Access-Control-Allow-Origin'] = '*'
-    response.header['Access-Control-Allow-Methods'] = 'POST'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST'
     response.status_code = 201
     return response
 
