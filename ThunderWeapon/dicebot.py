@@ -3,11 +3,15 @@ import re
 from random import randint
 from ast import literal_eval
 
+
 class DiceBotParseError(Exception):
+
     def __init__(self, text):
         self.text = text
 
+
 class DiceBot:
+
     def __init__(self):
         """constructor"""
 
@@ -46,7 +50,8 @@ class DiceBot:
             res["reload"] = rolled
             res["total"] = literal_eval(formula)
             if comp is not None:
-               res["result"] = "成功" if literal_eval(res.total + comp) else "失敗"
+                res["result"] = "成功" if literal_eval(
+                    res.total + comp) else "失敗"
         except:
             return None
         return res
