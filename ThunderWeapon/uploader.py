@@ -14,13 +14,12 @@ class Uploader(object):
             self.bucket = self.s3.create_bucket("glendar")
 
     def upload(self, f):
-        fp = f.stream
+        fp = f.stream.read()
         name = f.filename
         data = boto.s3.key.Key(self.bucket)
         uniq_filename = str(uuid.uuid4())
         data.key = uniq_filename+'.'+".".join(name.split('.')[1:])
-        data.set_contents_from_file(fp)
-
+        data.set_contents_from_string(fp)
         return {
                 "key": name,
                 "filename": data.key
