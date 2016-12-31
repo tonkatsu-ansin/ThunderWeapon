@@ -1,5 +1,6 @@
 boto==2.45.0
 click==6.6
+-e git+https://github.com/kpachnis/python-dotenv.git@70147dc21f05abc180fc7861fb83b8dda0b2b130#egg=dotenv
 Flask==0.12
 Flask-Cors==3.0.2
 Flask-Script==2.0.5
@@ -10,6 +11,7 @@ Jinja2==2.8
 MarkupSafe==0.23
 py==1.4.32
 pytest==3.0.5
+python-dotenv==0.6.1
 python-firebase==1.2
 requests==2.12.4
 six==1.10.0

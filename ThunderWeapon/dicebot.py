@@ -15,6 +15,19 @@ class DiceBot:
     def __init__(self):
         """constructor"""
 
+    @staticmethod
+    def template(result, user):
+        message = '@{0} -> '.format(user)
+        for i in result["reload"]:
+            message += '('
+            print(i["numbers"])
+            message += ",".join([str(x) for x in i["numbers"]])
+            message += ')'
+
+        message += ' = '
+        message += str(result["total"])
+        return message
+
     def rollDice(self, num1, num2):
         numbers = []
         total = 0
@@ -54,4 +67,5 @@ class DiceBot:
                     res.total + comp) else "失敗"
         except:
             return None
+        print(res)
         return res
