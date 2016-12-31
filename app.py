@@ -46,6 +46,7 @@ def upload():
         f = request.files['file']
         uploader = Uploader()
         result = uploader.upload(f)
+        firebase.post('/boards/assets', result)
         result.update({"status":"ok"})
         response = jsonify(result)
         response.headers.add('Access-Control-Allow-Origin', '*')
