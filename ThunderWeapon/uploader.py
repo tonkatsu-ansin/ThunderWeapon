@@ -8,7 +8,7 @@ class Uploader(object):
     """Uploader"""
     def __init__(self):
         try:
-            self.s3 = boto.connect_s3()
+            self.s3 = boto.connect_s3(os.environ.get("aws_access_key_id"), os.environ.get("aws_secret_access_key"))
             self.bucket = self.s3.get_bucket("glendar")
         except boto.exception.S3ResponseError:
             self.bucket = self.s3.create_bucket("glendar")
