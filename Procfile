@@ -1,1 +1,1 @@
-web: gunicorn app:app --log-file=-
+web: make production-run
