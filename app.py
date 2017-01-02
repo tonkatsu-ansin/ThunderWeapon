@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
+from flask import Flask, request, jsonify
+from firebase import firebase
+import json
+from flask_cors import CORS
+from ThunderWeapon import Uploader, DiceBot
 from os.path import join, dirname
 import os
 from dotenv import load_dotenv
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
-from ThunderWeapon import Uploader, DiceBot
-from flask import Flask, request, jsonify
-from firebase import firebase
-import json
-from flask_cors import CORS
 
 firebase = firebase.FirebaseApplication(os.getenv("FIREBASE_URL"), None)
 app = Flask("ChatServer")
 cors = CORS(app)
+
 
 @app.route("/", methods=["POST"])
 def chat():
@@ -27,18 +28,21 @@ def chat():
             res["color"] = "#0F7001"
             res["user"] = "DiceBot"
             firebase.post('/boards/chat', res)
-        response = jsonify({"status": "ok"})
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Methods', 'OPTIONS, GET,PUT,POST,DELETE')
-        response.status_code = 201
-        return response
+        res = jsonify({"status": "ok"})
+        res.headers.add('Access-Control-Allow-Origin', '*')
+        res.headers.add('Access-Control-Allow-Methods',
+                        'OPTIONS, GET,PUT,POST,DELETE')
+        res.status_code = 201
+        return res
     except Exception as e:
         print(e)
-        response = jsonify({"status": "fail"})
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Methods', 'OPTIONS, GET,PUT,POST,DELETE')
-        response.status_code = 400
-        return response
+        res = jsonify({"status": "fail"})
+        res.headers.add('Access-Control-Allow-Origin', '*')
+        res.headers.add('Access-Control-Allow-Methods',
+                        'OPTIONS, GET,PUT,POST,DELETE')
+        res.status_code = 400
+        return res
+
 
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -47,18 +51,19 @@ def upload():
         uploader = Uploader()
         result = uploader.upload(f)
         firebase.post('/boards/assets', result)
-        result.update({"status":"ok"})
+        result.update({"status": "ok"})
         response = jsonify(result)
         response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Methods', 'OPTIONS, GET,PUT,POST,DELETE')
+        response.headers.add('Access-Control-Allow-Methods',
+                             'OPTIONS, GET,PUT,POST,DELETE')
         response.status_code = 201
-        print(response)
         return response
     except Exception as e:
-        print(e)
-        response = jsonify({"status": "fail"})
+        app.logger.debug(e)
+        response = jsonify({"status": "fail", "message": e.args})
         response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Methods', 'OPTIONS, GET,PUT,POST,DELETE')
+        response.headers.add('Access-Control-Allow-Methods',
+                             'OPTIONS, GET,PUT,POST,DELETE')
         response.status_code = 400
         return response
 
