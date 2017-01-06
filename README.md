@@ -5,6 +5,6 @@ dicebot
 
 ```
 pip install -r requirements.txt
-py.test tests/
-python app.py
+make test
+make run
 ```
