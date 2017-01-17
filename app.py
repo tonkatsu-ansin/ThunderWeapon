@@ -27,6 +27,8 @@ class JST(tzinfo):
 
     def tzname(self, dt):
         return 'JST'@app.route("/", methods=["POST"])
+
+@app.route("/", methods=["POST"])
 def chat():
     data = json.loads(request.data.decode('utf-8'))
     try:
