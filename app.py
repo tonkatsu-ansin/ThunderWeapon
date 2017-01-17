@@ -4,6 +4,7 @@ from firebase import firebase
 import json
 from flask_cors import CORS
 from ThunderWeapon import Uploader, DiceBot
+from datetime import datetime
 from os.path import join, dirname
 import os
 from dotenv import load_dotenv
@@ -27,6 +28,7 @@ def chat():
             res["text"] = dicebot.template(roll_result, data["user"])
             res["color"] = "#0F7001"
             res["user"] = "DiceBot"
+            res["time"] = datetime.now().strftime("%H:%M")
             firebase.post('/boards/chat', res)
         res = jsonify({"status": "ok"})
         res.headers.add('Access-Control-Allow-Origin', '*')
