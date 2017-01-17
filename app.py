@@ -4,7 +4,7 @@ from firebase import firebase
 import json
 from flask_cors import CORS
 from ThunderWeapon import Uploader, DiceBot
-from datetime import datetime
+from datetime import datetime, tzinfo
 from os.path import join, dirname
 import os
 from dotenv import load_dotenv
