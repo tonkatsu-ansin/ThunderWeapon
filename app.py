@@ -4,7 +4,7 @@ from firebase import firebase
 import json
 from flask_cors import CORS
 from ThunderWeapon import Uploader, DiceBot
-from datetime import datetime, tzinfo
+from datetime import datetime, tzinfo, timedelta
 from os.path import join, dirname
 import os
 from dotenv import load_dotenv
@@ -17,16 +17,16 @@ cors = CORS(app)
 
 
 class JST(tzinfo):
+
     def utcoffset(self, dt):
         return timedelta(hours=9)
-
 
     def dst(self, dt):
         return timedelta(0)
 
-
     def tzname(self, dt):
-        return 'JST'@app.route("/", methods=["POST"])
+        return 'JST'
+
 
 @app.route("/", methods=["POST"])
 def chat():
