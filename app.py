@@ -16,7 +16,17 @@ app = Flask("ChatServer")
 cors = CORS(app)
 
 
-@app.route("/", methods=["POST"])
+class JST(tzinfo):
+    def utcoffset(self, dt):
+        return timedelta(hours=9)
+
+
+    def dst(self, dt):
+        return timedelta(0)
+
+
+    def tzname(self, dt):
+        return 'JST'@app.route("/", methods=["POST"])
 def chat():
     data = json.loads(request.data.decode('utf-8'))
     try:
@@ -28,7 +38,7 @@ def chat():
             res["text"] = dicebot.template(roll_result, data["user"])
             res["color"] = "#0F7001"
             res["user"] = "DiceBot"
-            res["time"] = datetime.now().strftime("%H:%M")
+            res["time"] = datetime.now(tz=JST()).strftime("%H:%M")
             firebase.post('/boards/chat', res)
         res = jsonify({"status": "ok"})
         res.headers.add('Access-Control-Allow-Origin', '*')
