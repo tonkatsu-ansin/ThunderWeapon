@@ -2,7 +2,7 @@ src
 .env
 *.pyc
 __pycache__/
-.catche
+.cache
 lib
 bin
 include
