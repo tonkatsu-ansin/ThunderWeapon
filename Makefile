@@ -1,5 +1,5 @@
 lint:
-	ls *.py */**.py | xargs -n1 pep8
+	ls *.py */**.py | xargs -n1 pycodestyle
 
 autolint:
 	ls *.py */**.py | xargs -n1 autopep8 -i
