@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 from firebase import firebase
 import json
+import re
 from flask_cors import CORS
 from ThunderWeapon import Uploader, DiceBot
 from datetime import datetime, tzinfo, timedelta
@@ -30,8 +31,19 @@ class JST(tzinfo):
 
 @app.route("/", methods=["POST"])
 def chat():
-    data = json.loads(request.data.decode('utf-8'))
+    def validator(data):
+        for i in ["user", "text", "color"]:
+            a = data.get(i, None)
+            if a is None:
+                raise ValueError(i)
+            elif a == "":
+                raise ValueError(i)
+        if not re.match(r"^#[0-9a-fA-F]{6}$", data.get("color")):
+            raise ValueError("invalid color code")
+
     try:
+        data = json.loads(request.data.decode('utf-8'))
+        validator(data)
         firebase.post('/boards/chat', data)
         dicebot = DiceBot()
         roll_result = dicebot.roll(data["text"])

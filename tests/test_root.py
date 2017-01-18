@@ -2,6 +2,7 @@
 from app import app
 import json
 
+
 class TestChat:
 
     @classmethod
@@ -10,7 +11,7 @@ class TestChat:
 
     def test_valid(self):
         data = json.dumps({
-            "color": "#0000",
+            "color": "#000000",
             "user": "testUser",
             "text": "これはテストなんだぞ！"
         })
@@ -27,7 +28,7 @@ class TestChat:
 
     def test_invalid_empty_user(self):
         data = json.dumps({
-            "color": "#0000",
+            "color": "#000000",
             "text": "これはテストなんだぞ！"
         })
         response = self.client.post("/", data=data)
@@ -35,7 +36,7 @@ class TestChat:
 
     def test_invalid_empty_text(self):
         data = json.dumps({
-            "color": "#0000",
+            "color": "#000000",
             "user": "testUser",
         })
         response = self.client.post("/", data=data)
@@ -43,7 +44,7 @@ class TestChat:
 
     def test_invalid_empty_text_string(self):
         data = json.dumps({
-            "color": "#0000",
+            "color": "#000000",
             "user": "testUser",
             "text": ""
         })
@@ -52,7 +53,7 @@ class TestChat:
 
     def test_invalid_empty_text_user(self):
         data = json.dumps({
-            "color": "#0000",
+            "color": "#000000",
             "user": "",
             "text": "これはテストなんだぞ"
         })
