@@ -1,6 +1,8 @@
-import pytest
+# -*- coding: utf-8 -*-
+
+import sys
+sys.path.append('..')
 import ThunderWeapon
-import pdb
 
 
 class TestDiceBot:
