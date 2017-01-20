@@ -29,3 +29,4 @@ traitlets
 wcwidth
 Werkzeug
 fake-factory
+Faker
