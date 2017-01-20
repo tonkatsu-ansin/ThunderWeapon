@@ -5,6 +5,7 @@ from app import app
 from faker import Factory
 from json import loads
 
+
 class TestUpload:
 
     @classmethod
