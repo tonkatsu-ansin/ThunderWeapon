@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, request, jsonify
+from werkzeug.exceptions import RequestEntityTooLarge
 from firebase import firebase
 import json
 import re
@@ -9,11 +10,13 @@ from datetime import datetime, tzinfo, timedelta
 from os.path import join, dirname
 import os
 from dotenv import load_dotenv
+
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
 firebase = firebase.FirebaseApplication(os.getenv("FIREBASE_URL"), None)
 app = Flask("ChatServer")
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 * 1024 - 1
 cors = CORS(app)
 
 
@@ -84,6 +87,15 @@ def upload():
                              'OPTIONS, GET,PUT,POST,DELETE')
         response.status_code = 201
         return response
+    except RequestEntityTooLarge as e:
+        app.logger.debug(e)
+        response = jsonify({"status": "fail", "message": e.args})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Methods',
+                             'OPTIONS, GET,PUT,POST,DELETE')
+        response.status_code = 413
+        return response
+
     except Exception as e:
         app.logger.debug(e)
         response = jsonify({"status": "fail", "message": e.args})
