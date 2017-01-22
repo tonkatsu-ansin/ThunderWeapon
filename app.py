@@ -46,6 +46,8 @@ def chat():
 
     try:
         data = json.loads(request.data.decode('utf-8'))
+        if data.get('time', None) is None:
+            data['time'] = datetime.now(tz=JST()).strftime("%H:%M")
         validator(data)
         firebase.post('/boards/chat', data)
         dicebot = DiceBot()
