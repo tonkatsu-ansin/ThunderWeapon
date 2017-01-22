@@ -46,3 +46,24 @@ class TestUpload:
             b'a' * (1024 * 16 - 1)), 'fuga.txt')})  # 16MB file upload
         assert response.status_code == 413
         assert loads(response.data.decode('utf-8')).get('status') == 'fail'
+
+    def test_valid_api_limit(self):
+        response = self.client.post('/upload', data={'file': (BytesIO(
+            b'a'), 'fuga.txt')})
+        assert response.status_code == 201
+        assert loads(response.data.decode('utf-8')).get('status') == 'ok'
+        response = self.client.post('/upload', data={'file': (BytesIO(
+            b'a'), 'fuga.txt')})
+        assert response.status_code == 201
+        assert loads(response.data.decode('utf-8')).get('status') == 'ok'
+
+    def test_invalid_api_limit(self):
+        response = self.client.post('/upload', data={'file': (BytesIO(
+            b'a'), 'fuga.txt')})
+        assert response.status_code == 201
+        assert loads(response.data.decode('utf-8')).get('status') == 'ok'
+        response = self.client.post('/upload', data={'file': (BytesIO(
+            b'a'), 'fuga.txt')})
+        assert response.status_code == 403
+        assert loads(response.data.decode('utf-8')
+                     ).get('status') == 'rate limit'
