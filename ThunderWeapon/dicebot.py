@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 import re
 from random import randint
 from ast import literal_eval
