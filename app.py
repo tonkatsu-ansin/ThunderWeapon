@@ -8,6 +8,8 @@ from flask_cors import CORS
 from ThunderWeapon import Uploader, DiceBot
 from datetime import datetime, tzinfo, timedelta
 from os.path import join, dirname
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import os
 from dotenv import load_dotenv
 
@@ -16,6 +18,17 @@ load_dotenv(dotenv_path)
 
 firebase = firebase.FirebaseApplication(os.getenv("FIREBASE_URL"), None)
 app = Flask("ChatServer")
+
+
+def rate_limit_from_config():
+    return app.config.get("API_LIMIT", "50/hour")
+
+
+app.config['API_LIMIT'] = '50/hour'
+limitter = Limiter(
+    app,
+    key_func=get_remote_address,
+)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 * 1024 - 1
 cors = CORS(app)
 
@@ -74,6 +87,7 @@ def chat():
 
 
 @app.route("/upload", methods=["POST"])
+@limitter.limit(rate_limit_from_config, error_message='api limit')
 def upload():
     try:
         f = request.files['file']
