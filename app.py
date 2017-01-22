@@ -23,6 +23,7 @@ app = Flask("ChatServer")
 def rate_limit_from_config():
     return app.config.get("API_LIMIT", "50/hour")
 
+
 app.config['API_LIMIT'] = '50/hour'
 limitter = Limiter(
     app,
