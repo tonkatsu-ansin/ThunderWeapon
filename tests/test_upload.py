@@ -39,3 +39,10 @@ class TestUpload:
             b'a' * 1024 * 16), 'fuga.txt')})  # 16MB file upload
         assert response.status_code == 413
         assert loads(response.data.decode('utf-8')).get('status') == 'fail'
+
+    @conentlength(16 * 1024)
+    def test_valid_filesize(self):
+        response = self.client.post('/upload', data={'file': (BytesIO(
+            b'a' * (1024 * 16 - 1)), 'fuga.txt')})  # 16MB file upload
+        assert response.status_code == 413
+        assert loads(response.data.decode('utf-8')).get('status') == 'fail'
